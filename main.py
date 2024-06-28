@@ -81,7 +81,7 @@ def watcher():
                     avatars.append(cached_avatars[user.id])
                 except:
                     avatar = requests.get(user.display_avatar.url).content
-                    avatar = add_corners(Image.open(io.BytesIO(avatar)).convert('RGB').resize((128, 128)), 64)
+                    avatar = add_corners(Image.open(io.BytesIO(avatar)).convert('RGB').resize((256, 256)), 128)
                     cached_avatars[user.id] = avatar
                     avatars.append(avatar)
             avatars_image = [[]]
@@ -94,12 +94,13 @@ def watcher():
                 temp_avatars = []
                 for idx, x in enumerate(row):
                     if idx != len(row) - 1:
-                        x = ImageOps.expand(x, border=(0,0,15,0), fill=(0,0,0,0))
+                        x = ImageOps.expand(x, border=(0,0,30,0), fill=(0,0,0,0))
                     temp_avatars.append(x)
                 if temp_avatars != []:
                     avatars_vstack.append(np.hstack(temp_avatars))
             if avatars_vstack != []:
-                avatars_image = ImageOps.pad(Image.fromarray(np.vstack(avatars_vstack)), (1129, 128), color=(0, 0, 0, 0))
+                avatars_vstack = [ImageOps.pad(Image.fromarray(x), (2258, 256), color=(0, 0, 0, 0)) for x in avatars_vstack]
+                avatars_image = Image.fromarray(np.vstack(avatars_vstack))
                 with io.BytesIO() as imagebn:
                     avatars_image.save(imagebn, "PNG")
                     imagebn.seek(0)
