@@ -17,7 +17,7 @@ intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 messages = []
 cached_avatars = {}
-directory = # Should be an int corresponding to a channel
+directory = 1124170292508495892 # Should be an int corresponding to a channel
 
 class DiscordMessage:
     def __init__(self, time, user, channel, message_id):
@@ -81,7 +81,7 @@ def watcher():
                     avatars.append(cached_avatars[user.id])
                 except:
                     avatar = requests.get(user.display_avatar.url).content
-                    avatar = add_corners(Image.open(io.BytesIO(avatar)).convert('RGB').resize((64, 64)), 32)
+                    avatar = add_corners(Image.open(io.BytesIO(avatar)).convert('RGB').resize((128, 128)), 64)
                     cached_avatars[user.id] = avatar
                     avatars.append(avatar)
             avatars_image = [[]]
@@ -99,7 +99,7 @@ def watcher():
                 if temp_avatars != []:
                     avatars_vstack.append(np.hstack(temp_avatars))
             if avatars_vstack != []:
-                avatars_image = Image.fromarray(np.vstack(avatars_vstack))
+                avatars_image = ImageOps.pad(Image.fromarray(np.vstack(avatars_vstack)), (1129, 128), color=(0, 0, 0, 0))
                 with io.BytesIO() as imagebn:
                     avatars_image.save(imagebn, "PNG")
                     imagebn.seek(0)
