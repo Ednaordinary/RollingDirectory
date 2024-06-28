@@ -17,7 +17,7 @@ intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 messages = []
 cached_avatars = {}
-directory = 1124170292508495892 # Should be an int corresponding to a channel
+directory = # Should be an int corresponding to a channel
 
 class DiscordMessage:
     def __init__(self, time, user, channel, message_id):
